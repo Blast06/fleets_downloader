@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "42615317756",
+    "firebase_url": "https://flutter-varios-aed02.firebaseio.com",
+    "project_id": "flutter-varios-aed02",
+    "storage_bucket": "flutter-varios-aed02.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:42615317756:android:ae4b340e26d4ef4b3da379",
+        "android_client_info": {
+          "package_name": "com.fleets.fleetsdownloader"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "42615317756-vuq0h9sbqpf4q4d4kc8k82r65mkju4o4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfLwWLJZUxfx_iXtM-ijsp0TL6zVLWNBQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "42615317756-vuq0h9sbqpf4q4d4kc8k82r65mkju4o4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
