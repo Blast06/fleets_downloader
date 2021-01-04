@@ -11,6 +11,9 @@ class AboutController extends GetxController {
   // RxBool get showShimmer => _isShowingShimmer;
   // set showShimmer(bool value) => _isShowingShimmer = value.obs;
 
+  String description =
+      "# About Flees Downloader\n\n\n\nThis is an app where you can download the Fleets of a twitter user. We can't do it on the app so this app allows you to download either video or pics posted as Fleets.";
+
   @override
   void onInit() {
     super.onInit();

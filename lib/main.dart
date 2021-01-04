@@ -1,5 +1,6 @@
 import 'package:admob_flutter/admob_flutter.dart';
 import 'package:firebase_admob/firebase_admob.dart';
+import 'package:fleetsdownloader/data/services/admob_service.dart';
 import 'package:fleetsdownloader/ui/screens/home_page.dart';
 import 'package:fleetsdownloader/utils/translations.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +16,7 @@ import 'package:device_preview/device_preview.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  FirebaseAdMob.instance
-      .initialize(appId: 'ca-app-pub-2334510780816542~7385148076');
+  FirebaseAdMob.instance.initialize(appId: AdMobService().getAdMobAppId());
   // Admob.initialize();
   runApp(MyApp());
 }
@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,

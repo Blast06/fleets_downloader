@@ -19,9 +19,7 @@ class InformationPage extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Center(
-                    child: controller.isShowingShimmer.value
-                        ? const CircularProgressIndicator()
-                        : MarkdownBody(data: _.infos[0].description),
+                    child: MarkdownBody(data: _.description),
                   ),
                 ),
               ),

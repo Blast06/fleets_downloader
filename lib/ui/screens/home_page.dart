@@ -31,7 +31,7 @@ class _HomePage extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    AdMobService.showHomeBannerAd();
+    // AdMobService.showHomeBannerAd();
   }
 
   @override

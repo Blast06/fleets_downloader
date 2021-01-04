@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:fleetsdownloader/data/models/Fleets.dart';
+import 'package:fleetsdownloader/data/services/admob_service.dart';
 import 'package:fleetsdownloader/data/services/api/http_api.dart';
 import 'package:fleetsdownloader/ui/screens/user_fleets_page.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +46,12 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     logger.i("ON INIT STARTED :D ");
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+    AdMobService.hideHomeBannerAd();
   }
 
   getFleets(String profile) async {

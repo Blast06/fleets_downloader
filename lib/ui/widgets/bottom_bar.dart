@@ -27,17 +27,18 @@ class _BottomBarState extends State<BottomBar> {
           items: [
             CustomNavigationBarItem(
               icon: const Icon(Icons.home),
-              title: const Text('Home', style: TextStyle(color: Colors.black)),
-            ),
-            CustomNavigationBarItem(
-              icon: const Icon(Icons.info),
-              title: const Text("Privacy Politics",
+              title: Text('bottom_bar_home'.tr,
                   style: TextStyle(color: Colors.black)),
             ),
             CustomNavigationBarItem(
               icon: const Icon(Icons.info),
-              title: const Text(
-                "About",
+              title: Text('bottom_bar_privacy'.tr,
+                  style: TextStyle(color: Colors.black)),
+            ),
+            CustomNavigationBarItem(
+              icon: const Icon(Icons.info),
+              title: Text(
+                'bottom_bar_about'.tr,
                 style: TextStyle(color: Colors.black),
               ),
             ),
