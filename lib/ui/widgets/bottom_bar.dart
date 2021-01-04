@@ -21,7 +21,7 @@ class _BottomBarState extends State<BottomBar> {
       builder: (_) => CustomNavigationBar(
           iconSize: 30,
           selectedColor: Colors.black,
-          strokeColor: Colors.red,
+          strokeColor: Colors.greenAccent,
           unSelectedColor: Colors.black26,
           backgroundColor: Colors.white,
           items: [
