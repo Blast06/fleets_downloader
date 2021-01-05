@@ -1,4 +1,3 @@
-import 'package:admob_flutter/admob_flutter.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:fleetsdownloader/data/services/admob_service.dart';
 import 'package:fleetsdownloader/ui/screens/home_page.dart';
