@@ -47,7 +47,7 @@
             android:value="2" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-2334510780816542~7385148076"/>
+            android:value="ca-app-pub-4473546092325949~7375288910"/>
     </application>
      <uses-permission android:name="android.permission.INTERNET"/>
      <uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE"/>
