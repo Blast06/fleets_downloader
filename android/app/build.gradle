@@ -82,3 +82,4 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics'
 
 }
+}
