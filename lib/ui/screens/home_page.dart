@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_admob/firebase_admob.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:fleetsdownloader/controllers/HomeController.dart';
 import 'package:fleetsdownloader/data/services/admob_service.dart';
 import 'package:fleetsdownloader/ui/theme/apptheme.dart';
@@ -31,7 +32,8 @@ class _HomePage extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // AdMobService.showHomeBannerAd();
+    // FirebaseCrashlytics.instance.crash();
+    AdMobService.showHomeBannerAd();
   }
 
   @override
