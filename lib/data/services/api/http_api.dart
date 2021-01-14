@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fleetsdownloader/data/models/About.dart';
 import 'package:fleetsdownloader/data/models/Fleets.dart';
 import 'package:fleetsdownloader/data/models/Information.dart';
@@ -63,8 +65,9 @@ class HttpApi implements Api {
 
   @override
   Future<dynamic> getInfo(String profile) async {
+    Map<String, String> headers = {"auth": "JRuLKVBmb26E0ydi"};
     List<Fleets> fleets = [];
-    final response = await http.get('$fleetsUrl$profile');
+    final response = await http.get('$fleetsUrl$profile', headers: headers);
 
     if (response.statusCode == 404) {
       logger.v("status code: ${response.statusCode}");
