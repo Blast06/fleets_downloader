@@ -52,7 +52,7 @@ class HttpApi implements Api {
   @override
   Future<List<Fleets>> getFleets(String profile) async {
     List<Fleets> fleets = [];
-    //just a commit test ci/cd
+
     logger.d("Sending http for Fleets");
     final response = await http.get('$fleetsUrl$profile');
 
