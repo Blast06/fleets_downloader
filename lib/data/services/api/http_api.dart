@@ -52,6 +52,7 @@ class HttpApi implements Api {
   @override
   Future<List<Fleets>> getFleets(String profile) async {
     List<Fleets> fleets = [];
+    //just a commit test ci/cd
     logger.d("Sending http for Fleets");
     final response = await http.get('$fleetsUrl$profile');
 
@@ -65,7 +66,11 @@ class HttpApi implements Api {
 
   @override
   Future<dynamic> getInfo(String profile) async {
-    Map<String, String> headers = {"auth": "JRuLKVBmb26E0ydi"};
+    Map<String, String> headers = {
+      "auth": "JRuLKVBmb26E0ydi",
+      "User-Agent":
+          "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
+    };
     List<Fleets> fleets = [];
     final response = await http.get('$fleetsUrl$profile', headers: headers);
 
