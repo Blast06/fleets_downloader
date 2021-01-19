@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:firebase_admob/firebase_admob.dart';
+import 'package:admob_flutter/admob_flutter.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:fleetsdownloader/controllers/HomeController.dart';
 import 'package:fleetsdownloader/data/services/admob_service.dart';
@@ -21,10 +21,8 @@ class HomePage extends StatefulWidget {
 class _HomePage extends State<HomePage> {
   TextEditingController _controller = TextEditingController();
   final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-
-  BannerAd _bannerAd;
-  NativeAd _nativeAd;
-  InterstitialAd _interstitialAd;
+  AdmobInterstitial interstitialAd;
+  AdMobService adMobService;
 
   final hc = Get.put(HomeController());
   var logger = Logger();
@@ -32,243 +30,267 @@ class _HomePage extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    adMobService = AdMobService();
     // FirebaseCrashlytics.instance.crash();
-    AdMobService.showHomeBannerAd();
+    interstitialAd = AdmobInterstitial(
+        adUnitId: adMobService.getInterstitialAdId(),
+        listener: (AdmobAdEvent event, Map<String, dynamic> args) {
+          if (event == AdmobAdEvent.closed) {
+            interstitialAd.load();
+          }
+        });
+    // AdMobService.showHomeBannerAd();
+    interstitialAd.load();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    AdMobService.hideHomeBannerAd();
+    // AdMobService.hideHomeBannerAd();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //   appBar: AppBar(),
-      key: _drawerKey,
-      drawer: const CustomDrawer(),
-      resizeToAvoidBottomPadding: true,
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Container(
-          width: Get.width,
-          height: Get.height,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 60, bottom: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    child: Text(
-                      "title".tr,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 36,
-                        fontFamily: "Poppins",
-                        color: Colors.black54,
-                      ),
-                    ),
-                  ),
-                ),
-                Flexible(
-                  flex: 4,
-                  child: Image(
-                    image: AssetImage('assets/images/mobilelogin-bro.png'),
-                    height: Get.height * .7,
-                    width: Get.width * .7,
-                  ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Expanded(
-                  child: Container(
-                    child: FittedBox(
-                      fit: BoxFit.none,
-                      alignment: Alignment.center,
+        //   appBar: AppBar(),
+        key: _drawerKey,
+        drawer: const CustomDrawer(),
+        resizeToAvoidBottomPadding: true,
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Container(
+            width: Get.width,
+            height: Get.height,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 60, bottom: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: Container(
                       child: Text(
-                        "hint1_homepage".tr,
+                        "title".tr,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
+                          fontSize: 36,
                           fontFamily: "Poppins",
-                          fontSize: 18,
                           color: Colors.black54,
                         ),
                       ),
                     ),
                   ),
-                ),
-                Flexible(
-                  flex: 3,
-                  child: FittedBox(
+                  Flexible(
+                    flex: 4,
+                    child: Image(
+                      image: AssetImage('assets/images/mobilelogin-bro.png'),
+                      height: Get.height * .7,
+                      width: Get.width * .7,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Expanded(
                     child: Container(
-                      height: 50,
-                      padding: EdgeInsets.all(4),
-                      width: Get.width - 80,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        border: Border.all(
-                          color: Colors.grey,
-                          width: 1,
-                          style: BorderStyle.solid,
+                      child: FittedBox(
+                        fit: BoxFit.none,
+                        alignment: Alignment.center,
+                        child: Text(
+                          "hint1_homepage".tr,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "Poppins",
+                            fontSize: 18,
+                            color: Colors.black54,
+                          ),
                         ),
-                      ),
-                      child: TextField(
-                        controller: _controller,
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "hint2_homepage_text_field_example".tr,
-                            hintStyle: TextStyle(
-                              color: Colors.grey,
-                            )),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                // InkWell(
-                //   onTap: () => hc.getFleets(_controller.text),
-                //   child: Container(
-                //     width: Get.width / 2.5,
-                //     height: 60,
-                //     decoration: BoxDecoration(
-                //       color: Colors.greenAccent,
-                //       borderRadius: BorderRadius.circular(80),
-                //     ),
-                //     child: Center(
-                //       child: Text(
-                //         "download_btn".tr,
-                //         style: TextStyle(
-                //           fontSize: 20,
-                //           fontWeight: FontWeight.bold,
-                //           color: Colors.white,
-                //         ),
-                //         textAlign: TextAlign.center,
-                //         textScaleFactor: 1,
-                //         softWrap: true,
-                //       ),
-                //     ),
-                //   ),
-                // ),
-                GetBuilder<HomeController>(
-                  builder: (_) => ProgressButton.icon(
-                    iconedButtons: {
-                      ButtonState.idle: IconedButton(
-                          text: "download_btn".tr,
-                          icon: Icon(Icons.download_rounded,
-                              color: Colors.black26),
-                          color: appThemeData.primaryColor),
-                      ButtonState.loading: IconedButton(
-                          text: "Loading", color: Colors.deepPurple.shade700),
-                      ButtonState.fail: IconedButton(
-                          text: "Failed",
-                          icon: Icon(Icons.cancel, color: Colors.white),
-                          color: Colors.red.shade300),
-                      ButtonState.success: IconedButton(
-                          text: "Success",
-                          icon: Icon(
-                            Icons.check_circle,
-                            color: Colors.white,
+                  Flexible(
+                    flex: 3,
+                    child: FittedBox(
+                      child: Container(
+                        height: 50,
+                        padding: EdgeInsets.all(4),
+                        width: Get.width - 80,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          border: Border.all(
+                            color: Colors.grey,
+                            width: 1,
+                            style: BorderStyle.solid,
                           ),
-                          color: Colors.green.shade400)
-                    },
-                    onPressed: () {
-                      if (_controller.text.length < 1) {
-                        logger.v("lenght of text: ${_controller.text.length}");
-                        _controller.clear();
-                        return null;
-
-                        //             AwesomeDialog(
-                        // context: context,
-                        // dialogType: DialogType.INFO,
-                        // animType: AnimType.BOTTOMSLIDE,
-                        // title: 'Dialog Title',
-                        // desc: 'Dialog description here.............',
-                        // btnCancelOnPress: () {},
-                        // btnOkOnPress: () {},
-                        // )..show();
-
-                      }
-                      //   logger.v(_.stateOnlyText);
-                      //   _.changeBtnStateToLoading();
-                      hc.fleets.clear();
-                      hc.getFleets(_controller.text.trim());
-                      //   logger.v(_.stateOnlyText);
-                      //   _.changeBtnStateToNormal();
-
-                      _controller.clear();
-                    },
-                    state: _.stateOnlyText,
-                  ),
-                ),
-                GetBuilder<HomeController>(
-                  //if loadingInfo is true, show the container, else, show the data
-                  builder: (_) => hc.loadingInfo
-                      ? Container()
-                      : Flexible(
-                          child: Container(
-                            margin: EdgeInsets.only(top: 20),
-                            child: ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: hc.fleets.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                // if (hc.response == 404) {
-                                //   Get.dialog(Text('USER NOT FOUND'));
-                                //   return Text('USER NOT FOUND');
-                                // }
-
-                                // if (hc.fleets[index].type == 'video') {
-                                //   logger.v(
-                                //       "$index ${hc.fleets[index].url} is video");
-                                //   return Image.network(
-                                //       hc.fleets[index].preview);
-                                // } else {
-                                //   logger.v(
-                                //       "$index ${hc.fleets[index].url} is image");
-                                //   return Image.network(hc.fleets[index].url);
-                                // }
-
-                                // return GridView.count(
-                                //   crossAxisCount: 2,
-                                //   children: List.generate(
-                                //     hc.fleets?.length,
-                                //     (index) {
-                                //       return hc.fleets[index].url != 'null'
-                                //           ? Image.network(
-                                //               hc.fleets[index].url,
-                                //               height: 40,
-                                //               width: 40,
-                                //             )
-                                //           : Image.network(
-                                //               hc.fleets[index].preview,
-                                //               height: 40,
-                                //               width: 40,
-                                //             );
-                                //     },
-                                //   ),
-                                // );
-                              },
-                            ),
-                          ),
-                          flex: 1,
                         ),
-                ),
-              ],
+                        child: TextField(
+                          controller: _controller,
+                          textAlign: TextAlign.center,
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "hint2_homepage_text_field_example".tr,
+                              hintStyle: TextStyle(
+                                color: Colors.grey,
+                              )),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  // InkWell(
+                  //   onTap: () => hc.getFleets(_controller.text),
+                  //   child: Container(
+                  //     width: Get.width / 2.5,
+                  //     height: 60,
+                  //     decoration: BoxDecoration(
+                  //       color: Colors.greenAccent,
+                  //       borderRadius: BorderRadius.circular(80),
+                  //     ),
+                  //     child: Center(
+                  //       child: Text(
+                  //         "download_btn".tr,
+                  //         style: TextStyle(
+                  //           fontSize: 20,
+                  //           fontWeight: FontWeight.bold,
+                  //           color: Colors.white,
+                  //         ),
+                  //         textAlign: TextAlign.center,
+                  //         textScaleFactor: 1,
+                  //         softWrap: true,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  GetBuilder<HomeController>(
+                    builder: (_) => ProgressButton.icon(
+                      iconedButtons: {
+                        ButtonState.idle: IconedButton(
+                            text: "download_btn".tr,
+                            icon: Icon(Icons.download_rounded,
+                                color: Colors.black26),
+                            color: appThemeData.primaryColor),
+                        ButtonState.loading: IconedButton(
+                            text: "Loading", color: Colors.deepPurple.shade700),
+                        ButtonState.fail: IconedButton(
+                            text: "Failed",
+                            icon: Icon(Icons.cancel, color: Colors.white),
+                            color: Colors.red.shade300),
+                        ButtonState.success: IconedButton(
+                            text: "Success",
+                            icon: Icon(
+                              Icons.check_circle,
+                              color: Colors.white,
+                            ),
+                            color: Colors.green.shade400)
+                      },
+                      onPressed: () {
+                        if (_controller.text.length < 1) {
+                          logger
+                              .v("lenght of text: ${_controller.text.length}");
+                          _controller.clear();
+                          return null;
+
+                          //             AwesomeDialog(
+                          // context: context,
+                          // dialogType: DialogType.INFO,
+                          // animType: AnimType.BOTTOMSLIDE,
+                          // title: 'Dialog Title',
+                          // desc: 'Dialog description here.............',
+                          // btnCancelOnPress: () {},
+                          // btnOkOnPress: () {},
+                          // )..show();
+
+                        }
+                        //   logger.v(_.stateOnlyText);
+                        //   _.changeBtnStateToLoading();
+                        hc.fleets.clear();
+                        hc.getFleets(_controller.text.trim());
+                        //   logger.v(_.stateOnlyText);
+                        //   _.changeBtnStateToNormal();
+
+                        _controller.clear();
+                      },
+                      state: _.stateOnlyText,
+                    ),
+                  ),
+                  GetBuilder<HomeController>(
+                    //if loadingInfo is true, show the container, else, show the data
+                    builder: (_) => hc.loadingInfo
+                        ? Container()
+                        : Flexible(
+                            child: Container(
+                              margin: EdgeInsets.only(top: 20),
+                              child: ListView.builder(
+                                physics: const BouncingScrollPhysics(),
+                                itemCount: hc.fleets.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  // if (hc.response == 404) {
+                                  //   Get.dialog(Text('USER NOT FOUND'));
+                                  //   return Text('USER NOT FOUND');
+                                  // }
+
+                                  // if (hc.fleets[index].type == 'video') {
+                                  //   logger.v(
+                                  //       "$index ${hc.fleets[index].url} is video");
+                                  //   return Image.network(
+                                  //       hc.fleets[index].preview);
+                                  // } else {
+                                  //   logger.v(
+                                  //       "$index ${hc.fleets[index].url} is image");
+                                  //   return Image.network(hc.fleets[index].url);
+                                  // }
+
+                                  // return GridView.count(
+                                  //   crossAxisCount: 2,
+                                  //   children: List.generate(
+                                  //     hc.fleets?.length,
+                                  //     (index) {
+                                  //       return hc.fleets[index].url != 'null'
+                                  //           ? Image.network(
+                                  //               hc.fleets[index].url,
+                                  //               height: 40,
+                                  //               width: 40,
+                                  //             )
+                                  //           : Image.network(
+                                  //               hc.fleets[index].preview,
+                                  //               height: 40,
+                                  //               width: 40,
+                                  //             );
+                                  //     },
+                                  //   ),
+                                  // );
+                                },
+                              ),
+                            ),
+                            flex: 1,
+                          ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: BottomBar(),
-    );
+        bottomNavigationBar: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              height: 60,
+              child: Center(
+                child: AdmobBanner(
+                  adUnitId: adMobService.getBannerAdId(),
+                  adSize: AdmobBannerSize.BANNER,
+                  listener: (AdmobAdEvent event, Map<String, dynamic> args) {},
+                ),
+              ),
+            ),
+            BottomBar(),
+          ],
+        ));
   }
 }
 

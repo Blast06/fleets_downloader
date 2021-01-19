@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:firebase_admob/firebase_admob.dart';
+// import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 
 // REAL ADS
@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 // TEST ADS
 // ios
 // ca-app-pub-2334510780816542~6726672523
+
 // android
 // ca-app-pub-2334510780816542~7385148076
 // banners:
@@ -31,12 +32,12 @@ class AdMobService {
     return null;
   }
 
-  static String _getBannerAdId() {
+  String getBannerAdId() {
     if (Platform.isIOS) {
-//      return 'ca-app-pub-2334510780816542/6833456062';
+      // return 'ca-app-pub-2334510780816542/6833456062';
       return 'ca-app-pub-4473546092325949/4105309502';
     } else if (Platform.isAndroid) {
-//      return 'ca-app-pub-2334510780816542/2993163849';
+      // return 'ca-app-pub-2334510780816542/2993163849';
       return "ca-app-pub-4473546092325949/4749125570";
     }
     return null;
@@ -53,33 +54,33 @@ class AdMobService {
     return null;
   }
 
-  InterstitialAd getNewTripInterstitial() {
-    return InterstitialAd(
-      adUnitId: getInterstitialAdId(),
-      listener: (MobileAdEvent event) {
-        print('InterstitialAd event is $event');
-      },
-    );
-  }
+  // InterstitialAd getNewTripInterstitial() {
+  //   return InterstitialAd(
+  //     adUnitId: getInterstitialAdId(),
+  //     listener: (MobileAdEvent event) {
+  //       print('InterstitialAd event is $event');
+  //     },
+  //   );
+  // }
 
-  static BannerAd _homeBannerAd;
+  // static BannerAd _homeBannerAd;
 
-  static BannerAd _getHomePageBannerAd() {
-    return BannerAd(
-      adUnitId: _getBannerAdId(),
-      size: AdSize.banner,
-    );
-  }
+  // static BannerAd _getHomePageBannerAd() {
+  //   return BannerAd(
+  //     adUnitId: getBannerAdId(),
+  //     size: AdSize.banner,
+  //   );
+  // }
 
-  static void showHomeBannerAd() {
-    if (_homeBannerAd == null) _homeBannerAd = _getHomePageBannerAd();
-    _homeBannerAd
-      ..load()
-      ..show(anchorOffset: kBottomNavigationBarHeight);
-  }
+  // static void showHomeBannerAd() {
+  //   if (_homeBannerAd == null) _homeBannerAd = _getHomePageBannerAd();
+  //   _homeBannerAd
+  //     ..load()
+  //     ..show(anchorOffset: kBottomNavigationBarHeight);
+  // }
 
-  static void hideHomeBannerAd() async {
-    await _homeBannerAd.dispose();
-    _homeBannerAd = null;
-  }
+//   static void hideHomeBannerAd() async {
+//     await _homeBannerAd.dispose();
+//     _homeBannerAd = null;
+//   }
 }

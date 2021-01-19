@@ -48,13 +48,13 @@ class _BottomBarState extends State<BottomBar> {
             gc.changeCurrentIndex(index);
             switch (index) {
               case 0:
-                Get.to(HomePage(), transition: Transition.zoom);
+                Get.to(HomePage(), transition: Transition.cupertino);
                 break;
               case 1:
-                Get.to(InformationPage(), transition: Transition.zoom);
+                Get.to(InformationPage(), transition: Transition.cupertino);
                 break;
               case 2:
-                Get.to(AboutPage(), transition: Transition.zoom);
+                Get.to(AboutPage(), transition: Transition.cupertino);
                 break;
               default:
                 Get.to(HomePage(), transition: Transition.zoom);
