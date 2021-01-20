@@ -130,11 +130,12 @@ class _HomePage extends State<HomePage> {
                           controller: _controller,
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "hint2_homepage_text_field_example".tr,
-                              hintStyle: TextStyle(
-                                color: Colors.grey,
-                              )),
+                            border: InputBorder.none,
+                            hintText: "hint2_homepage_text_field_example".tr,
+                            hintStyle: TextStyle(
+                              color: Colors.grey,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -194,31 +195,18 @@ class _HomePage extends State<HomePage> {
                               .v("lenght of text: ${_controller.text.length}");
                           _controller.clear();
                           return null;
-
-                          //             AwesomeDialog(
-                          // context: context,
-                          // dialogType: DialogType.INFO,
-                          // animType: AnimType.BOTTOMSLIDE,
-                          // title: 'Dialog Title',
-                          // desc: 'Dialog description here.............',
-                          // btnCancelOnPress: () {},
-                          // btnOkOnPress: () {},
-                          // )..show();
-
                         }
-                        //   logger.v(_.stateOnlyText);
-                        //   _.changeBtnStateToLoading();
                         hc.fleets.clear();
+                        //GET THE USERS' FLEETS
                         hc.getFleets(_controller.text.trim());
-                        //   logger.v(_.stateOnlyText);
-                        //   _.changeBtnStateToNormal();
-
+                        logger.v("lenght of text: ${_controller.text}");
                         _controller.clear();
                       },
                       state: _.stateOnlyText,
                     ),
                   ),
                   GetBuilder<HomeController>(
+                    //TODO: DDELETE THIS
                     //if loadingInfo is true, show the container, else, show the data
                     builder: (_) => hc.loadingInfo
                         ? Container()

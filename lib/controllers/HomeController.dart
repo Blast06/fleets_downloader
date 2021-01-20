@@ -22,6 +22,7 @@ class HomeController extends GetxController {
   List<Fleets> fleets = [];
   ButtonState stateOnlyText = ButtonState.idle;
   ButtonState stateTextWithIcon = ButtonState.idle;
+  AdMobService adMobService = AdMobService();
   var response;
   Dio dio = Dio();
 
@@ -55,11 +56,13 @@ class HomeController extends GetxController {
   }
 
   getFleets(String profile) async {
+    adMobService.loadInterstitial();
     await changeBtnStateToLoading();
 
     //check if 404 for the user or gets the fleets
     final response = await http.getInfo(profile);
     if (response != 404) {
+      adMobService.showInterstitial();
       fleets.clear();
       fleets.addAll(response);
       Get.to(
