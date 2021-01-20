@@ -143,30 +143,6 @@ class _HomePage extends State<HomePage> {
                   SizedBox(
                     height: 20,
                   ),
-                  // InkWell(
-                  //   onTap: () => hc.getFleets(_controller.text),
-                  //   child: Container(
-                  //     width: Get.width / 2.5,
-                  //     height: 60,
-                  //     decoration: BoxDecoration(
-                  //       color: Colors.greenAccent,
-                  //       borderRadius: BorderRadius.circular(80),
-                  //     ),
-                  //     child: Center(
-                  //       child: Text(
-                  //         "download_btn".tr,
-                  //         style: TextStyle(
-                  //           fontSize: 20,
-                  //           fontWeight: FontWeight.bold,
-                  //           color: Colors.white,
-                  //         ),
-                  //         textAlign: TextAlign.center,
-                  //         textScaleFactor: 1,
-                  //         softWrap: true,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                   GetBuilder<HomeController>(
                     builder: (_) => ProgressButton.icon(
                       iconedButtons: {
