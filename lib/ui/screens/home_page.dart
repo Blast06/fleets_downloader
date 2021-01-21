@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:firebase_admob/firebase_admob.dart';
+import 'package:admob_flutter/admob_flutter.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:fleetsdownloader/controllers/HomeController.dart';
 import 'package:fleetsdownloader/data/services/admob_service.dart';
@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
+import 'package:in_app_review/in_app_review.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,39 +22,70 @@ class HomePage extends StatefulWidget {
 class _HomePage extends State<HomePage> {
   TextEditingController _controller = TextEditingController();
   final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  AdmobInterstitial interstitialAd;
+  AdMobService adMobService;
 
-  BannerAd _bannerAd;
-  NativeAd _nativeAd;
-  InterstitialAd _interstitialAd;
+  final InAppReview _inAppReview = InAppReview.instance;
+  String _appStoreId = '1547368999';
+  bool _isAvailable;
+
+  final InAppReview inAppReview = InAppReview.instance;
 
   final hc = Get.put(HomeController());
   var logger = Logger();
 
   @override
   void initState() {
+    hc.checkReview();
+    //inAppREVIEW CODE
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _inAppReview
+    //       .isAvailable()
+    //       .then(
+    //         (bool isAvailable) => setState(
+    //           () => _isAvailable = isAvailable && !Platform.isAndroid,
+    //         ),
+    //       )
+    //       .catchError((_) => setState(() => _isAvailable = false));
+    // });
     super.initState();
+    adMobService = AdMobService();
     // FirebaseCrashlytics.instance.crash();
-    AdMobService.showHomeBannerAd();
+    interstitialAd = AdmobInterstitial(
+        adUnitId: adMobService.getInterstitialAdId(),
+        listener: (AdmobAdEvent event, Map<String, dynamic> args) {
+          if (event == AdmobAdEvent.closed) {
+            interstitialAd.load();
+          }
+        });
+    // AdMobService.showHomeBannerAd();
+    interstitialAd.load();
   }
+
+  // void _setAppStoreId(String id) => _appStoreId = id;
+
+  // Future<void> _requestReview() => _inAppReview.requestReview();
+
+  // Future<void> _openStoreListing() => _inAppReview.openStoreListing(
+  //       appStoreId: _appStoreId,
+  //     );
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    AdMobService.hideHomeBannerAd();
+    // AdMobService.hideHomeBannerAd();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //   appBar: AppBar(),
-      key: _drawerKey,
-      drawer: const CustomDrawer(),
-      resizeToAvoidBottomPadding: true,
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Container(
+        //   appBar: AppBar(),
+        key: _drawerKey,
+        drawer: const CustomDrawer(),
+        resizeToAvoidBottomPadding: true,
+        backgroundColor: Colors.white,
+        body: Container(
           width: Get.width,
           height: Get.height,
           child: Padding(
@@ -123,11 +155,12 @@ class _HomePage extends State<HomePage> {
                         controller: _controller,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "hint2_homepage_text_field_example".tr,
-                            hintStyle: TextStyle(
-                              color: Colors.grey,
-                            )),
+                          border: InputBorder.none,
+                          hintText: "hint2_homepage_text_field_example".tr,
+                          hintStyle: TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -135,30 +168,6 @@ class _HomePage extends State<HomePage> {
                 SizedBox(
                   height: 20,
                 ),
-                // InkWell(
-                //   onTap: () => hc.getFleets(_controller.text),
-                //   child: Container(
-                //     width: Get.width / 2.5,
-                //     height: 60,
-                //     decoration: BoxDecoration(
-                //       color: Colors.greenAccent,
-                //       borderRadius: BorderRadius.circular(80),
-                //     ),
-                //     child: Center(
-                //       child: Text(
-                //         "download_btn".tr,
-                //         style: TextStyle(
-                //           fontSize: 20,
-                //           fontWeight: FontWeight.bold,
-                //           color: Colors.white,
-                //         ),
-                //         textAlign: TextAlign.center,
-                //         textScaleFactor: 1,
-                //         softWrap: true,
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 GetBuilder<HomeController>(
                   builder: (_) => ProgressButton.icon(
                     iconedButtons: {
@@ -186,89 +195,36 @@ class _HomePage extends State<HomePage> {
                         logger.v("lenght of text: ${_controller.text.length}");
                         _controller.clear();
                         return null;
-
-                        //             AwesomeDialog(
-                        // context: context,
-                        // dialogType: DialogType.INFO,
-                        // animType: AnimType.BOTTOMSLIDE,
-                        // title: 'Dialog Title',
-                        // desc: 'Dialog description here.............',
-                        // btnCancelOnPress: () {},
-                        // btnOkOnPress: () {},
-                        // )..show();
-
                       }
-                      //   logger.v(_.stateOnlyText);
-                      //   _.changeBtnStateToLoading();
                       hc.fleets.clear();
+                      //GET THE USERS' FLEETS
                       hc.getFleets(_controller.text.trim());
-                      //   logger.v(_.stateOnlyText);
-                      //   _.changeBtnStateToNormal();
-
+                      logger.v("lenght of text: ${_controller.text}");
                       _controller.clear();
                     },
                     state: _.stateOnlyText,
                   ),
                 ),
-                GetBuilder<HomeController>(
-                  //if loadingInfo is true, show the container, else, show the data
-                  builder: (_) => hc.loadingInfo
-                      ? Container()
-                      : Flexible(
-                          child: Container(
-                            margin: EdgeInsets.only(top: 20),
-                            child: ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: hc.fleets.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                // if (hc.response == 404) {
-                                //   Get.dialog(Text('USER NOT FOUND'));
-                                //   return Text('USER NOT FOUND');
-                                // }
-
-                                // if (hc.fleets[index].type == 'video') {
-                                //   logger.v(
-                                //       "$index ${hc.fleets[index].url} is video");
-                                //   return Image.network(
-                                //       hc.fleets[index].preview);
-                                // } else {
-                                //   logger.v(
-                                //       "$index ${hc.fleets[index].url} is image");
-                                //   return Image.network(hc.fleets[index].url);
-                                // }
-
-                                // return GridView.count(
-                                //   crossAxisCount: 2,
-                                //   children: List.generate(
-                                //     hc.fleets?.length,
-                                //     (index) {
-                                //       return hc.fleets[index].url != 'null'
-                                //           ? Image.network(
-                                //               hc.fleets[index].url,
-                                //               height: 40,
-                                //               width: 40,
-                                //             )
-                                //           : Image.network(
-                                //               hc.fleets[index].preview,
-                                //               height: 40,
-                                //               width: 40,
-                                //             );
-                                //     },
-                                //   ),
-                                // );
-                              },
-                            ),
-                          ),
-                          flex: 1,
-                        ),
-                ),
               ],
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: BottomBar(),
-    );
+        bottomNavigationBar: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              height: 60,
+              child: Center(
+                child: AdmobBanner(
+                  adUnitId: adMobService.getBannerAdId(),
+                  adSize: AdmobBannerSize.BANNER,
+                  listener: (AdmobAdEvent event, Map<String, dynamic> args) {},
+                ),
+              ),
+            ),
+            BottomBar(),
+          ],
+        ));
   }
 }
 
