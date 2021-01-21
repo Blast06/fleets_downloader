@@ -9,6 +9,7 @@ import 'package:fleetsdownloader/ui/screens/user_fleets_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:logger/logger.dart';
 import 'package:progress_state_button/progress_button.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -25,6 +26,11 @@ class HomeController extends GetxController {
   AdMobService adMobService = AdMobService();
   var response;
   Dio dio = Dio();
+
+  String _appStoreId = '1547368999';
+  bool _isAvailable;
+
+  final InAppReview inAppReview = InAppReview.instance;
 
   void changeCurrentIndex(int index) {
     currentIndex = index;
@@ -87,6 +93,15 @@ class HomeController extends GetxController {
       await launch(url);
     } else {
       throw 'Could not launch $url';
+    }
+  }
+
+  //checks if review is available
+  checkReview() async {
+    if (await inAppReview.isAvailable()) {
+      inAppReview.requestReview();
+    } else {
+      inAppReview.openStoreListing(appStoreId: _appStoreId);
     }
   }
 }
