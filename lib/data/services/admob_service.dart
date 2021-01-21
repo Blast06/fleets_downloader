@@ -43,8 +43,8 @@ class AdMobService {
 
   String getBannerAdId() {
     if (Platform.isIOS) {
-      return 'ca-app-pub-2334510780816542/6833456062';
-      //return 'ca-app-pub-4473546092325949/4105309502';
+      //return 'ca-app-pub-2334510780816542/6833456062';
+      return 'ca-app-pub-4473546092325949/4105309502';
     } else if (Platform.isAndroid) {
       // return 'ca-app-pub-2334510780816542/2993163849';
       return "ca-app-pub-4473546092325949/4749125570";
@@ -54,8 +54,8 @@ class AdMobService {
 
   String getInterstitialAdId() {
     if (Platform.isIOS) {
-      //return 'ca-app-pub-4473546092325949/4972829735';
-      return 'ca-app-pub-3940256099942544/4411468910';
+      return 'ca-app-pub-4473546092325949/4972829735';
+      //return 'ca-app-pub-3940256099942544/4411468910';
     } else if (Platform.isAndroid) {
       return 'ca-app-pub-4473546092325949/7977432875';
       //return "ca-app-pub-3940256099942544/1033173712";
