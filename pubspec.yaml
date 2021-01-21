@@ -34,7 +34,7 @@ dependencies:
   admob_flutter: ^1.0.1
   dio: ^3.0.10
   url_launcher: ^5.7.10
-  firebase_core: ^0.5.3
+  firebase_core: ^0.6.0
   in_app_review: ^1.0.4
   firebase_crashlytics:
   
