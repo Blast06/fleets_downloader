@@ -60,6 +60,7 @@ class _HomePage extends State<HomePage> {
         });
     // AdMobService.showHomeBannerAd();
     interstitialAd.load();
+    
   }
 
   // void _setAppStoreId(String id) => _appStoreId = id;
