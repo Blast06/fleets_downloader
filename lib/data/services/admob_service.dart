@@ -3,15 +3,7 @@ import 'dart:io';
 import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/material.dart';
 
-// REAL ADS
-// android
-// ca-app-pub-4473546092325949~7375288910
-// ca-app-pub-4473546092325949/4749125570
-// ios
-// ca-app-pub-4473546092325949~1931390541
-// ca-app-pub-4473546092325949/4105309502
-
-// TEST ADS
+// TEST APP ID
 // ios
 // ca-app-pub-2334510780816542~6726672523
 // android
@@ -23,7 +15,15 @@ import 'package:flutter/material.dart';
 // android
 // ca-app-pub-3940256099942544/6300978111
 
-//INTERSTITIALS
+// REAL ADS --Banners
+// android
+// ca-app-pub-4473546092325949~7375288910
+// ca-app-pub-4473546092325949/4749125570
+// ios
+// ca-app-pub-4473546092325949~1931390541
+// ca-app-pub-4473546092325949/4105309502
+
+//REAL ADS -- INTERSTITIALS
 //android
 //ca-app-pub-4473546092325949/7977432875
 //ios
