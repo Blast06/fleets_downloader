@@ -23,6 +23,7 @@ void main() async {
   // FirebaseAdMob.instance.initialize(appId: AdMobService().getAdMobAppId());
   Admob.initialize();
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  Admob.requestTrackingAuthorization();
   runApp(MyApp());
 }
 
