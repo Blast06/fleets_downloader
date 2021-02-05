@@ -12,8 +12,7 @@ import 'api.dart';
 class HttpApi implements Api {
   String url = 'https://strapi-giveaways-api.herokuapp.com';
   String profile;
-  String fleetsUrl =
-      'https://us-central1-fleetsapi.cloudfunctions.net/app/api/v1/users?userID=';
+  String fleetsUrl = 'https://twitter-fleets.herokuapp.com/scrape/fleets/';
   List<Information> information = [];
   List<About> about = [];
 
@@ -59,30 +58,28 @@ class HttpApi implements Api {
     logger.v("Response body: ${response.body}");
     logger.v("response status: ${response.statusCode} ");
 
-    final data = fleetsFromJson(response.body);
-    fleets.addAll(data);
-    return fleets;
+    // fleets.addAll(data);
+    // return fleets;
   }
 
   @override
   Future<dynamic> getInfo(String profile) async {
-    Map<String, String> headers = {
-      "auth": "JBxrK5RpyvcqiPnA",
-      "User-Agent":
-          "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
-    };
     List<Fleets> fleets = [];
-    final response = await http.get('$fleetsUrl$profile', headers: headers);
+
+    logger.d("Sending http for Fleets");
+    final response = await http.get('$fleetsUrl$profile');
+
+    logger.v("Response body: ${response.body}");
+    logger.v("response status: ${response.statusCode} ");
 
     if (response.statusCode == 404) {
       logger.v("status code: ${response.statusCode}");
       return 404;
     }
-    logger.v("response: ${response.body}");
+
     final data = fleetsFromJson(response.body);
-    fleets.addAll(data);
-    logger.i("lista de fleets:");
-    logger.v(fleets);
+
+    fleets.add(data);
     return fleets;
   }
 }

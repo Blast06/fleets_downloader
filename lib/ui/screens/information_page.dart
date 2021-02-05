@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 class InformationPage extends StatelessWidget {
   final controller = Get.put(InformationController());
   final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

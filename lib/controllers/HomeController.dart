@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+// import 'dart:html';
+// import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:fleetsdownloader/data/models/Fleets.dart';
@@ -8,11 +10,15 @@ import 'package:fleetsdownloader/data/services/api/http_api.dart';
 import 'package:fleetsdownloader/ui/screens/user_fleets_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:get/get.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:logger/logger.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:progress_state_button/progress_button.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http2;
 
 class HomeController extends GetxController {
   int currentIndex = 0;
@@ -24,8 +30,12 @@ class HomeController extends GetxController {
   ButtonState stateOnlyText = ButtonState.idle;
   ButtonState stateTextWithIcon = ButtonState.idle;
   AdMobService adMobService = AdMobService();
+  double progress;
+  bool downloading;
   var response;
   Dio dio = Dio();
+  VlcPlayerController _videoPlayerController;
+  String videoUrl;
 
   String _appStoreId = '1547368999';
   bool _isAvailable;
@@ -35,6 +45,15 @@ class HomeController extends GetxController {
   void changeCurrentIndex(int index) {
     currentIndex = index;
     update();
+  }
+
+  Future<void> initializePlayer(String url) async {
+    _videoPlayerController = VlcPlayerController.network(
+      url,
+      hwAcc: HwAcc.FULL,
+      autoPlay: false,
+      options: VlcPlayerOptions(),
+    );
   }
 
   Future<void> changeBtnStateToLoading() async {
@@ -50,15 +69,16 @@ class HomeController extends GetxController {
   }
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
     logger.i("ON INIT STARTED :D ");
   }
 
   @override
-  void onClose() {
+  void onClose() async {
     super.onClose();
-    // AdMobService.hideHomeBannerAd();
+    await _videoPlayerController.stopRendererScanning();
+    await _videoPlayerController.dispose();
   }
 
   getFleets(String profile) async {
@@ -103,5 +123,48 @@ class HomeController extends GetxController {
     } else {
       inAppReview.openStoreListing(appStoreId: _appStoreId);
     }
+  }
+
+  Future<void> downloadContent(String url) async {
+    bool _permissionReady = await _checkPermission();
+    Directory dir = (await getApplicationDocumentsDirectory());
+    String fileName = DateTime.now().toString();
+    String path = '${dir.path}/$fileName';
+
+    if (!_permissionReady) {
+      _checkPermission().then((hasGranted) {
+        _permissionReady = hasGranted;
+      });
+    } else {
+      dio.download(url, path, onReceiveProgress: (rcv, total) {
+        downloading = true;
+        progress = ((rcv / total) * 100).floorToDouble();
+        logger.v(progress);
+        if (progress > 99) {
+          downloading = false;
+          Get.snackbar(
+              "snackbar_download_title".tr, "snackbar_download_message".tr,
+              snackPosition: SnackPosition.BOTTOM);
+        }
+      });
+    }
+    update();
+  }
+
+  Future<bool> _checkPermission() async {
+    PermissionStatus permission = await PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.storage);
+    if (permission != PermissionStatus.granted) {
+      Map<PermissionGroup, PermissionStatus> permissions =
+          await PermissionHandler()
+              .requestPermissions([PermissionGroup.storage]);
+      if (permissions[PermissionGroup.storage] == PermissionStatus.granted) {
+        return true;
+      }
+    } else {
+      return true;
+    }
+
+    return false;
   }
 }

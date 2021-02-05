@@ -16,7 +16,9 @@ class MyTransalations extends Translations {
           'user_not_found': 'User not found or does not have posted fleets',
           'user_not_found_description': 'Please make sure..',
           'users_fleets_title': 'Fleets',
-          'tap_to_download': 'Tap to Download'
+          'tap_to_download': 'Tap to Download',
+          'snackbar_download_title': 'Fleet Downloaded!',
+          'snackbar_download_message': 'Check your storage'
         },
         'es': {
           'title': 'Fleets Downloader',
@@ -30,7 +32,9 @@ class MyTransalations extends Translations {
           'user_not_found': 'Usuario no encontrado o no tiene Fleets',
           'user_not_found_description': 'Favor asegurarse',
           'users_fleets_title': 'Fleets',
-          'tap_to_download': 'Toca para descargar'
+          'tap_to_download': 'Toca para descargar',
+          'snackbar_download_title': 'Fleet descargado',
+          'snackbar_download_message': 'Revisa tu almacenamiento'
         },
       };
 }
