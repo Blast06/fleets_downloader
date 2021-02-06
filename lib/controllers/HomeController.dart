@@ -10,6 +10,7 @@ import 'package:fleetsdownloader/data/services/api/http_api.dart';
 import 'package:fleetsdownloader/ui/screens/user_fleets_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:get/get.dart';
 import 'package:in_app_review/in_app_review.dart';
@@ -39,8 +40,6 @@ class HomeController extends GetxController {
 
   String _appStoreId = '1547368999';
   bool _isAvailable;
-
-  final InAppReview inAppReview = InAppReview.instance;
 
   void changeCurrentIndex(int index) {
     currentIndex = index;
@@ -72,6 +71,7 @@ class HomeController extends GetxController {
   void onInit() async {
     super.onInit();
     logger.i("ON INIT STARTED :D ");
+    FlutterDownloader.registerCallback(downloadingCallback);
   }
 
   @override
@@ -117,13 +117,13 @@ class HomeController extends GetxController {
   }
 
   //checks if review is available
-  checkReview() async {
-    if (await inAppReview.isAvailable()) {
-      inAppReview.requestReview();
-    } else {
-      inAppReview.openStoreListing(appStoreId: _appStoreId);
-    }
-  }
+  // checkReview() async {
+  //   if (await inAppReview.isAvailable()) {
+  //     inAppReview.requestReview();
+  //   } else {
+  //     inAppReview.openStoreListing(appStoreId: _appStoreId);
+  //   }
+  // }
 
   Future<void> downloadContent(String url) async {
     bool _permissionReady = await _checkPermission();
@@ -136,17 +136,29 @@ class HomeController extends GetxController {
         _permissionReady = hasGranted;
       });
     } else {
-      dio.download(url, path, onReceiveProgress: (rcv, total) {
-        downloading = true;
-        progress = ((rcv / total) * 100).floorToDouble();
-        logger.v(progress);
-        if (progress > 99) {
-          downloading = false;
-          Get.snackbar(
-              "snackbar_download_title".tr, "snackbar_download_message".tr,
-              snackPosition: SnackPosition.BOTTOM);
-        }
-      });
+      final externalDir = await getExternalStorageDirectory();
+      // dio.download(url, path, onReceiveProgress: (actualbytes, totalbytes) {
+      //   downloading = true;
+      //   var progress2 = (actualbytes / totalbytes) * 100;
+      //   logger.v(progress2.floor());
+      //   if (progress2 > 99) {
+      //     downloading = false;
+      //     Get.snackbar(
+      //         "snackbar_download_title".tr, "snackbar_download_message".tr,
+      //         snackPosition: SnackPosition.BOTTOM);
+      //   }
+      // });
+
+      final id = await FlutterDownloader.enqueue(
+        url: url,
+        savedDir: externalDir.path,
+        fileName: "fleets_${DateTime.now()}",
+        showNotification: true,
+        openFileFromNotification: true,
+      );
+
+      Get.snackbar("snackbar_download_title".tr, "snackbar_download_message".tr,
+          snackPosition: SnackPosition.BOTTOM);
     }
     update();
   }
@@ -167,4 +179,7 @@ class HomeController extends GetxController {
 
     return false;
   }
+
+  void downloadingCallback(
+      String id, DownloadTaskStatus status, int progress) {}
 }

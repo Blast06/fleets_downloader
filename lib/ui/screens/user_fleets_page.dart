@@ -1,13 +1,14 @@
 import 'dart:io';
 
+import 'package:fleetsdownloader/controllers/FleetController.dart';
 import 'package:fleetsdownloader/controllers/HomeController.dart';
 import 'package:fleetsdownloader/ui/theme/apptheme.dart';
 import 'package:fleetsdownloader/ui/widgets/bottom_bar.dart';
 import 'package:fleetsdownloader/ui/widgets/chew_list_item_widget.dart';
+import 'package:fleetsdownloader/ui/widgets/fleet_card.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:video_player/video_player.dart';
 
 class UserFleets extends StatefulWidget {
   final String userFleet;
@@ -18,9 +19,11 @@ class UserFleets extends StatefulWidget {
 }
 
 class _UserFleetsState extends State<UserFleets> {
+  final fc = Get.put(FleetController());
   @override
   void initState() {
     super.initState();
+    fc.checkReview();
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
   }
 
@@ -28,7 +31,10 @@ class _UserFleetsState extends State<UserFleets> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.userFleet),
+        title: Text(
+          widget.userFleet,
+          style: TextStyle(color: Colors.black),
+        ),
         backgroundColor: appThemeData.primaryColor,
       ),
       body: GetBuilder<HomeController>(
@@ -53,94 +59,36 @@ class _UserFleetsState extends State<UserFleets> {
             _.fleets.length < 1
                 ? const CircularProgressIndicator()
                 : Expanded(
-                    child: GridView.count(
-                      crossAxisSpacing: 5.0,
-                      mainAxisSpacing: 10.0,
-                      shrinkWrap: true,
+                    child: ListView.builder(
                       physics: const BouncingScrollPhysics(),
-                      crossAxisCount: 2,
-                      children: List.generate(
-                        _.fleets[0].data.length,
-                        (index) {
-                          return _.fleets[0].data[index].type == 'video'
-                              ? Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Stack(
-                                    children: [
-                                      GestureDetector(
-                                          child: Container(
-                                              // decoration: BoxDecoration(
-                                              //   image: DecorationImage(
-                                              //     image: NetworkImage(_
-                                              //         .fleets[0].data[index].url),
-                                              //     fit: BoxFit.cover,
-                                              //   ),
-                                              //   borderRadius: BorderRadius.all(
-                                              //     Radius.circular(20.0),
-                                              //   ),
-                                              // ),
-                                              child: ChewieListItem(
-                                            videoPlayerController:
-                                                VideoPlayerController.network(
-                                              _.fleets[0].data[index].url,
-                                            ),
-                                            looping: true,
-                                          )),
-                                          onTap: () {
-                                            _.launchURL(
-                                                _.fleets[0].data[index].url);
-                                            print("descargar");
-                                          }),
-                                      Align(
-                                        alignment: Alignment.bottomLeft,
-                                        child: Icon(Icons.cloud_download,
-                                            color: Colors.green),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Stack(
-                                    children: [
-                                      GestureDetector(
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: NetworkImage(_.fleets[0]
-                                                    .data[index].preview),
-                                                fit: BoxFit.cover,
-                                              ),
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(20.0),
-                                              ),
-                                            ),
-                                          ),
-                                          onTap: () {
-                                            _.downloadContent(
-                                                _.fleets[0].data[index].url);
-                                          }),
-                                      _.downloading == true
-                                          ? Align(
-                                              alignment: Alignment.bottomRight,
-                                              child: CircularProgressIndicator(
-                                                value: _.progress,
-                                              ),
-                                            )
-                                          : Align(
-                                              alignment: Alignment.bottomRight,
-                                              child: Icon(
-                                                Icons.cloud_download,
-                                                color:
-                                                    appThemeData.primaryColor,
-                                                size: 40,
-                                              ),
-                                            ),
-                                    ],
-                                  ),
-                                );
-                        },
-                      ),
+                      itemCount: _.fleets[0].data?.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Column(
+                          children: <Widget>[
+                            FleetCard(
+                                type: _.fleets[0].data[index].type,
+                                url: _.fleets[0].data[index].url),
+                            FlatButton.icon(
+                              onPressed: () => _
+                                  .downloadContent(_.fleets[0].data[index].url),
+                              icon: Icon(Icons.file_download),
+                              color: appThemeData.primaryColor,
+                              label: Text('download_btn'.tr),
+                            ),
+                            // if (_.downloading)
+                            //   {
+                            //     LinearProgressIndicator(
+                            //       backgroundColor: appThemeData.accentColor,
+                            //       valueColor: AlwaysStoppedAnimation<Color>(
+                            //         appThemeData.primaryColor,
+                            //       ),
+                            //       value: _.progress,
+                            //       minHeight: 60,
+                            //     )
+                            //   },
+                          ],
+                        );
+                      },
                     ),
                   ),
           ],

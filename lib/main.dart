@@ -6,6 +6,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:fleetsdownloader/ui/screens/home_page.dart';
 import 'package:fleetsdownloader/utils/translations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 //import 'package:device_preview/device_preview.dart';
 
@@ -20,6 +21,7 @@ import 'package:get/get.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await FlutterDownloader.initialize(debug: true);
   // FirebaseAdMob.instance.initialize(appId: AdMobService().getAdMobAppId());
   Admob.initialize();
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;

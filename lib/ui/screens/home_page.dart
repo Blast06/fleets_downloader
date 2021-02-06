@@ -36,7 +36,7 @@ class _HomePage extends State<HomePage> {
 
   @override
   void initState() {
-    hc.checkReview();
+    // hc.checkReview();
     //inAppREVIEW CODE
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   _inAppReview
@@ -60,7 +60,6 @@ class _HomePage extends State<HomePage> {
         });
     // AdMobService.showHomeBannerAd();
     interstitialAd.load();
-    
   }
 
   // void _setAppStoreId(String id) => _appStoreId = id;
