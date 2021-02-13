@@ -18,7 +18,9 @@ class MyTransalations extends Translations {
           'users_fleets_title': 'Fleets',
           'tap_to_download': 'Tap to Download',
           'snackbar_download_title': 'Fleet Downloaded!',
-          'snackbar_download_message': 'Check your storage'
+          'snackbar_download_message': 'Check your storage',
+          'loading_txt': 'Loading...',
+          'account_warning': 'Make sure the account is public!'
         },
         'es': {
           'title': 'Fleets Downloader',
@@ -34,7 +36,9 @@ class MyTransalations extends Translations {
           'users_fleets_title': 'Fleets',
           'tap_to_download': 'Toca para descargar',
           'snackbar_download_title': 'Fleet descargado',
-          'snackbar_download_message': 'Revisa tu almacenamiento'
+          'snackbar_download_message': 'Revisa tu almacenamiento',
+          'loading_txt': 'Cargando...',
+          'account_warning': 'Asegurate de que la cuenta es publica'
         },
       };
 }

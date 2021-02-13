@@ -1,17 +1,36 @@
-import 'package:fleetsdownloader/data/services/admob_service.dart';
+import 'package:fleetsdownloader/ui/screens/home_page.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
+import 'package:http/http.dart' as http;
+import 'AdmobController.dart';
 
 class SplashController extends GetxController {
-  AdMobService adMobService = AdMobService();
+  final admob = Get.find<AdmobController>();
   Logger log = Logger();
+
+  bool showInterstitial = false;
   @override
-  void onReady() {
-    // TODO: implement load linterstitial
-    log.i("Init of splash controller");
+  void onReady() async {
+    log.i("onReady of splash controller");
+    await prepareApi();
     super.onReady();
-    adMobService.loadInterstitial();
-    adMobService.showInterstitial();
+    await Future.delayed(Duration(seconds: 2), () {
+      admob.showInterstitial();
+      Get.off(HomePage(), transition: Transition.zoom);
+    });
+  }
+
+  void onInit() async {
+    super.onInit();
+    log.i("Init of splash controller");
+    // await prepareApi();
+    await admob.loadInterstitial();
+  }
+
+  prepareApi() async {
+    final response = await http.get(
+      'https://twitter-fleets.herokuapp.com/',
+    );
   }
 }

@@ -75,17 +75,6 @@ class _UserFleetsState extends State<UserFleets> {
                               color: appThemeData.primaryColor,
                               label: Text('download_btn'.tr),
                             ),
-                            // if (_.downloading)
-                            //   {
-                            //     LinearProgressIndicator(
-                            //       backgroundColor: appThemeData.accentColor,
-                            //       valueColor: AlwaysStoppedAnimation<Color>(
-                            //         appThemeData.primaryColor,
-                            //       ),
-                            //       value: _.progress,
-                            //       minHeight: 60,
-                            //     )
-                            //   },
                           ],
                         );
                       },

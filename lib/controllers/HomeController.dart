@@ -1,19 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
-// import 'dart:html';
-// import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:fleetsdownloader/data/models/Fleets.dart';
-import 'package:fleetsdownloader/data/services/admob_service.dart';
 import 'package:fleetsdownloader/data/services/api/http_api.dart';
 import 'package:fleetsdownloader/ui/screens/user_fleets_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:get/get.dart';
-import 'package:in_app_review/in_app_review.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:progress_state_button/progress_button.dart';
@@ -30,12 +25,11 @@ class HomeController extends GetxController {
   List<Fleets> fleets = [];
   ButtonState stateOnlyText = ButtonState.idle;
   ButtonState stateTextWithIcon = ButtonState.idle;
-  AdMobService adMobService = AdMobService();
+
   double progress;
   bool downloading;
   var response;
   Dio dio = Dio();
-  VlcPlayerController _videoPlayerController;
   String videoUrl;
 
   String _appStoreId = '1547368999';
@@ -46,14 +40,14 @@ class HomeController extends GetxController {
     update();
   }
 
-  Future<void> initializePlayer(String url) async {
-    _videoPlayerController = VlcPlayerController.network(
-      url,
-      hwAcc: HwAcc.FULL,
-      autoPlay: false,
-      options: VlcPlayerOptions(),
-    );
-  }
+  // Future<void> initializePlayer(String url) async {
+  //   _videoPlayerController = VlcPlayerController.network(
+  //     url,
+  //     hwAcc: HwAcc.FULL,
+  //     autoPlay: false,
+  //     options: VlcPlayerOptions(),
+  //   );
+  // }
 
   Future<void> changeBtnStateToLoading() async {
     stateOnlyText = ButtonState.loading;
@@ -77,18 +71,14 @@ class HomeController extends GetxController {
   @override
   void onClose() async {
     super.onClose();
-    await _videoPlayerController.stopRendererScanning();
-    await _videoPlayerController.dispose();
   }
 
   getFleets(String profile) async {
-    adMobService.loadInterstitial();
     await changeBtnStateToLoading();
 
     //check if 404 for the user or gets the fleets
     final response = await http.getInfo(profile);
     if (response != 404) {
-      adMobService.showInterstitial();
       fleets.clear();
       fleets.addAll(response);
       Get.to(
@@ -106,14 +96,6 @@ class HomeController extends GetxController {
     await changeBtnStateToNormal();
 
     update();
-  }
-
-  launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
   }
 
   //checks if review is available

@@ -21,4 +21,11 @@ class FleetController extends GetxController {
       // inAppReview.openStoreListing(appStoreId: _appStoreId);
     }
   }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    super.onClose();
+    checkReview();
+  }
 }

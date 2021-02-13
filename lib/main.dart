@@ -2,8 +2,10 @@ import 'package:admob_flutter/admob_flutter.dart';
 // import 'package:firebase_admob/firebase_admob.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:fleetsdownloader/controllers/AdmobController.dart';
 //import 'package:fleetsdownloader/data/services/admob_service.dart';
 import 'package:fleetsdownloader/ui/screens/home_page.dart';
+import 'package:fleetsdownloader/ui/screens/splash_screen_page.dart';
 import 'package:fleetsdownloader/utils/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -24,6 +26,7 @@ void main() async {
   await FlutterDownloader.initialize(debug: true);
   // FirebaseAdMob.instance.initialize(appId: AdMobService().getAdMobAppId());
   Admob.initialize();
+  Get.put(AdmobController());
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   Admob.requestTrackingAuthorization();
   runApp(MyApp());
@@ -42,7 +45,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(),
+      home: SplashPage(),
       locale: Get.deviceLocale,
       translations: MyTransalations(),
     );
