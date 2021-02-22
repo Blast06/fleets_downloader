@@ -23,7 +23,7 @@ class HomePage extends StatefulWidget {
 class _HomePage extends State<HomePage> {
   TextEditingController _controller = TextEditingController();
   final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-  AdmobInterstitial interstitialAd;
+  // AdmobInterstitial interstitialAd;
 
   final admob = Get.find<AdmobController>();
 

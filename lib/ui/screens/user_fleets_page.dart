@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:admob_flutter/admob_flutter.dart';
+import 'package:fleetsdownloader/controllers/AdmobController.dart';
 import 'package:fleetsdownloader/controllers/FleetController.dart';
 import 'package:fleetsdownloader/controllers/HomeController.dart';
 import 'package:fleetsdownloader/ui/theme/apptheme.dart';
@@ -20,6 +22,8 @@ class UserFleets extends StatefulWidget {
 
 class _UserFleetsState extends State<UserFleets> {
   final fc = Get.put(FleetController());
+  final admob = Get.find<AdmobController>();
+
   @override
   void initState() {
     super.initState();
@@ -83,7 +87,22 @@ class _UserFleetsState extends State<UserFleets> {
           ],
         )),
       ),
-      bottomNavigationBar: BottomBar(),
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            height: 60,
+            child: Center(
+              child: AdmobBanner(
+                adUnitId: admob.getBannerAdId(),
+                adSize: AdmobBannerSize.BANNER,
+                listener: (AdmobAdEvent event, Map<String, dynamic> args) {},
+              ),
+            ),
+          ),
+          BottomBar(),
+        ],
+      ),
     );
   }
 }
