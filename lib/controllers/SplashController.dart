@@ -13,6 +13,7 @@ class SplashController extends GetxController {
   @override
   void onReady() async {
     log.i("onReady of splash controller");
+    await admob.loadInterstitial();
     await prepareApi();
     super.onReady();
     await Future.delayed(Duration(seconds: 2), () {
@@ -25,7 +26,7 @@ class SplashController extends GetxController {
     super.onInit();
     log.i("Init of splash controller");
     // await prepareApi();
-    await admob.loadInterstitial();
+    // await admob.loadInterstitial();
   }
 
   prepareApi() async {
