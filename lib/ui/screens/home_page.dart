@@ -57,7 +57,7 @@ class _HomePage extends State<HomePage> {
       //   appBar: AppBar(),
       key: _drawerKey,
       drawer: const CustomDrawer(),
-      resizeToAvoidBottomPadding: true,
+      // resizeToAvoidBottomPadding: true,
       backgroundColor: Colors.white,
       body: Container(
         width: Get.width,
@@ -143,8 +143,8 @@ class _HomePage extends State<HomePage> {
                   iconedButtons: {
                     ButtonState.idle: IconedButton(
                         text: "download_btn".tr,
-                        icon:
-                            Icon(Icons.download_rounded, color: Colors.black26),
+                        icon: Icon(Icons.download_done_rounded,
+                            color: Colors.black26),
                         color: appThemeData.primaryColor),
                     ButtonState.loading: IconedButton(
                         text: "Loading", color: Colors.deepPurple.shade700),

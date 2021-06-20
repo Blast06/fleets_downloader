@@ -13,11 +13,10 @@ class SplashController extends GetxController {
   @override
   void onReady() async {
     log.i("onReady of splash controller");
-    await admob.loadInterstitial();
-    await prepareApi();
+    await admob.loadOpenad();
     super.onReady();
-    await Future.delayed(Duration(seconds: 2), () {
-      admob.showInterstitial();
+    await Future.delayed(Duration(seconds: 3), () {
+      admob.showAppOpen();
       Get.off(HomePage(), transition: Transition.zoom);
     });
   }

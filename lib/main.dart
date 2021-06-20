@@ -6,10 +6,13 @@ import 'package:fleetsdownloader/controllers/AdmobController.dart';
 //import 'package:fleetsdownloader/data/services/admob_service.dart';
 import 'package:fleetsdownloader/ui/screens/home_page.dart';
 import 'package:fleetsdownloader/ui/screens/splash_screen_page.dart';
+import 'package:fleetsdownloader/utils/Myadmob.dart';
 import 'package:fleetsdownloader/utils/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
+import 'package:native_admob_flutter/native_admob_flutter.dart';
+
 //import 'package:device_preview/device_preview.dart';
 
 //THIS IS TO ENABLE DEVICE PREVIEW
@@ -21,14 +24,29 @@ import 'package:get/get.dart';
 //     );
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+ WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await FlutterDownloader.initialize(debug: true);
-  // FirebaseAdMob.instance.initialize(appId: AdMobService().getAdMobAppId());
-  Admob.initialize();
-  Get.put(AdmobController());
+
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-  Admob.requestTrackingAuthorization();
+
+  
+  await MobileAds.initialize(
+    bannerAdUnitId: MyAdmob.getBannerAdId(),
+    interstitialAdUnitId: MyAdmob.getInterstitialAdId(),
+    appOpenAdUnitId: MyAdmob.getOpenAdId(),
+  );
+
+  
+  await MobileAds.requestTrackingAuthorization();
+  // RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("34FEAA5868007783EAE019607349D798"))
+  MobileAds.setTestDeviceIds(['34FEAA5868007783EAE019607349D798']);
+  Get.put(AdmobController());
+  // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  // Admob.requestTrackingAuthorization();
+  //
+  // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+  //   systemNavigationBarColor: Colors.greenAccent,
+  // ));
   runApp(MyApp());
 }
 

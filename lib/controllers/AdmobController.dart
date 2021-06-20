@@ -2,14 +2,21 @@ import 'dart:io';
 
 import 'package:fleetsdownloader/utils/Myadmob.dart';
 import 'package:get/get.dart';
+
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
-import 'package:admob_flutter/admob_flutter.dart';
+import 'package:native_admob_flutter/native_admob_flutter.dart';
 
 const TEST = false;
 
 class AdmobController extends GetxController {
-  AdmobInterstitial interstitialAd;
+  // AdmobInterstitial interstitialAd;
+  InterstitialAd interstitialAd;
+
+  AppOpenAd appOpenAd;
+
+  final bannerController = BannerAdController();
+
 
   Logger logger = Logger();
 
@@ -18,6 +25,11 @@ class AdmobController extends GetxController {
     super.onInit();
     // getInfo();
     logger.i("ADMOB CONTROLLER STARTED");
+  }
+
+  void onClose() {
+    bannerController.dispose();
+ 
   }
 
   String getAdMobAppId() {
@@ -55,14 +67,25 @@ class AdmobController extends GetxController {
     return null;
   }
 
+String getOpenAdId() {
+    if (Platform.isIOS) {
+      return TEST
+          ? MyAdmob.TEST_open_ad_id_ios
+          : MyAdmob.PROD_open_ad_id_ios;
+    } else if (Platform.isAndroid) {
+      return TEST
+          ? MyAdmob.TEST_open_ad_id_android
+          : MyAdmob.PROD_open_ad_id_android;
+    }
+    return null;
+  }
   loadInterstitial() {
-    interstitialAd = AdmobInterstitial(
-        adUnitId: getInterstitialAdId(),
-        listener: (AdmobAdEvent event, Map<String, dynamic> args) {
-          if (event == AdmobAdEvent.closed) {
-            interstitialAd.load();
-          }
-        });
+    interstitialAd = InterstitialAd(unitId: getInterstitialAdId());
+    // myInterstitial = InterstitialAd(
+    //   adUnitId: getInterstitialAdId(),
+    //   request: AdRequest(),
+    //   listener: AdListener(),
+    // );
 
     logger.i("interstitial loading..");
 
@@ -70,9 +93,39 @@ class AdmobController extends GetxController {
   }
 
   showInterstitial() async {
-    if (await interstitialAd.isLoaded) {
+    if (interstitialAd.isLoaded) {
       logger.i("interstitial is loaded");
       interstitialAd.show();
     }
+  }
+
+  loadOpenad() {
+    appOpenAd = AppOpenAd(timeout: Duration(minutes: 30) );
+
+    appOpenAd.load(orientation: AppOpenAd.ORIENTATION_PORTRAIT);
+  }
+
+  showAppOpen() async {
+    if (!appOpenAd.isAvailable) await appOpenAd.load();
+    if (appOpenAd.isAvailable) {
+      await appOpenAd.show();
+      // Load a new ad right after the other one was closed
+      appOpenAd.load();
+    }
+  }
+
+  showBanner() async {
+    bannerController.onEvent.listen((e) {
+      final event = e.keys.first;
+      // final info = e.values.first;
+      switch (event) {
+        case BannerAdEvent.loaded:
+          // setState(() => _bannerAdHeight = (info as int)?.toDouble());
+          break;
+        default:
+          break;
+      }
+    });
+    bannerController.load();
   }
 }
