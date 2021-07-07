@@ -24,19 +24,17 @@ import 'package:native_admob_flutter/native_admob_flutter.dart';
 //     );
 
 void main() async {
- WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
-  
   await MobileAds.initialize(
     bannerAdUnitId: MyAdmob.getBannerAdId(),
     interstitialAdUnitId: MyAdmob.getInterstitialAdId(),
     appOpenAdUnitId: MyAdmob.getOpenAdId(),
   );
 
-  
   await MobileAds.requestTrackingAuthorization();
   // RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("34FEAA5868007783EAE019607349D798"))
   MobileAds.setTestDeviceIds(['34FEAA5868007783EAE019607349D798']);
@@ -52,7 +50,6 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
-  Locale myLocale;
 
   @override
   Widget build(BuildContext context) {

@@ -21,19 +21,19 @@ class HomeController extends GetxController {
   var logger = Logger();
   bool loadingInfo = false;
   HttpApi http = HttpApi();
-  String profile;
+  String? profile;
   List<Fleets> fleets = [];
   ButtonState stateOnlyText = ButtonState.idle;
   ButtonState stateTextWithIcon = ButtonState.idle;
 
-  double progress;
-  bool downloading;
+  double? progress;
+  bool? downloading;
   var response;
   Dio dio = Dio();
-  String videoUrl;
+  String? videoUrl;
 
   String _appStoreId = '1547368999';
-  bool _isAvailable;
+  bool? _isAvailable;
 
   void changeCurrentIndex(int index) {
     currentIndex = index;
@@ -107,7 +107,7 @@ class HomeController extends GetxController {
   //   }
   // }
 
-  Future<void> downloadContent(String url) async {
+  Future<void> downloadContent(String? url) async {
     bool _permissionReady = await _checkPermission();
     Directory dir = (await getApplicationDocumentsDirectory());
     String fileName = DateTime.now().toString();
@@ -118,7 +118,8 @@ class HomeController extends GetxController {
         _permissionReady = hasGranted;
       });
     } else {
-      final externalDir = await getExternalStorageDirectory();
+      final externalDir =
+          await (getExternalStorageDirectory() as Future<Directory>);
       // dio.download(url, path, onReceiveProgress: (actualbytes, totalbytes) {
       //   downloading = true;
       //   var progress2 = (actualbytes / totalbytes) * 100;
@@ -132,7 +133,7 @@ class HomeController extends GetxController {
       // });
 
       final id = await FlutterDownloader.enqueue(
-        url: url,
+        url: url!,
         savedDir: externalDir.path,
         fileName: "fleets_${DateTime.now()}",
         showNotification: true,
@@ -146,20 +147,39 @@ class HomeController extends GetxController {
   }
 
   Future<bool> _checkPermission() async {
-    PermissionStatus permission = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.storage);
-    if (permission != PermissionStatus.granted) {
-      Map<PermissionGroup, PermissionStatus> permissions =
-          await PermissionHandler()
-              .requestPermissions([PermissionGroup.storage]);
-      if (permissions[PermissionGroup.storage] == PermissionStatus.granted) {
+    // PermissionStatus permission = await PermissionHandler()
+    //     .checkPermissionStatus(PermissionGroup.storage);
+    // if (permission != PermissionStatus.granted) {
+    //   Map<PermissionGroup, PermissionStatus> permissions =
+    //       await PermissionHandler()
+    //           .requestPermissions([PermissionGroup.storage]);
+    //   if (permissions[PermissionGroup.storage] == PermissionStatus.granted) {
+    //     return true;
+    //   }
+    // } else {
+    //   return true;
+    // }
+
+    // return false;
+
+    var status = await Permission.storage.status;
+    if (status.isDenied) {
+      // We didn't ask for permission yet or the permission has been denied before but not permanently.
+      if (await Permission.storage.request().isGranted) {
+        // Either the permission was already granted before or the user just granted it.
+        logger.v("Permission granted");
         return true;
       }
-    } else {
       return true;
     }
 
-    return false;
+// You can can also directly ask the permission about its status.
+    if (await Permission.location.isRestricted) {
+      // The OS restricts access, for example because of parental controls.
+      return false;
+    }
+
+    return true;
   }
 
   void downloadingCallback(

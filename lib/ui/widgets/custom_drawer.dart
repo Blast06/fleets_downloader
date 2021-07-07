@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CustomDrawer extends StatefulWidget {
-  final Function closeDrawer;
+  final Function? closeDrawer;
 
-  const CustomDrawer({Key key, this.closeDrawer}) : super(key: key);
+  const CustomDrawer({Key? key, this.closeDrawer}) : super(key: key);
 
   @override
   _CustomDrawerState createState() => _CustomDrawerState();

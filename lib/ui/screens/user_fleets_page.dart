@@ -14,7 +14,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class UserFleets extends StatefulWidget {
   final String userFleet;
-  const UserFleets({Key key, @required this.userFleet}) : super(key: key);
+  const UserFleets({Key? key, required this.userFleet}) : super(key: key);
 
   @override
   _UserFleetsState createState() => _UserFleetsState();
@@ -70,11 +70,11 @@ class _UserFleetsState extends State<UserFleets> {
                         return Column(
                           children: <Widget>[
                             FleetCard(
-                                type: _.fleets[0].data[index].type,
-                                url: _.fleets[0].data[index].url),
+                                type: _.fleets[0].data![index].type,
+                                url: _.fleets[0].data![index].url),
                             FlatButton.icon(
                               onPressed: () => _
-                                  .downloadContent(_.fleets[0].data[index].url),
+                                  .downloadContent(_.fleets[0].data![index].url),
                               icon: Icon(Icons.file_download),
                               color: appThemeData.primaryColor,
                               label: Text('download_btn'.tr),
@@ -94,9 +94,9 @@ class _UserFleetsState extends State<UserFleets> {
             height: 60,
             child: Center(
               child: AdmobBanner(
-                adUnitId: admob.getBannerAdId(),
+                adUnitId: admob.getBannerAdId()!,
                 adSize: AdmobBannerSize.BANNER,
-                listener: (AdmobAdEvent event, Map<String, dynamic> args) {},
+                listener: (AdmobAdEvent event, Map<String, dynamic>? args) {},
               ),
             ),
           ),

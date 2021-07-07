@@ -13,14 +13,14 @@ class Fleets {
     this.data,
   });
 
-  List<Datum> data;
+  List<Datum>? data;
 
   factory Fleets.fromJson(Map<String, dynamic> json) => Fleets(
         data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
       };
 }
 
@@ -31,9 +31,9 @@ class Datum {
     this.preview,
   });
 
-  String url;
-  String type;
-  String preview;
+  String? url;
+  String? type;
+  String? preview;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         url: json["url"],

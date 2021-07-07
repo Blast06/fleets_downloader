@@ -29,7 +29,7 @@ class _HomePage extends State<HomePage> {
 
   final InAppReview _inAppReview = InAppReview.instance;
   String _appStoreId = '1547368999';
-  bool _isAvailable;
+  // bool _isAvailable;
 
   final InAppReview inAppReview = InAppReview.instance;
 
@@ -190,9 +190,9 @@ class _HomePage extends State<HomePage> {
             height: 60,
             child: Center(
               child: AdmobBanner(
-                adUnitId: admob.getBannerAdId(),
+                adUnitId: admob.getBannerAdId()!,
                 adSize: AdmobBannerSize.BANNER,
-                listener: (AdmobAdEvent event, Map<String, dynamic> args) {},
+                listener: (AdmobAdEvent event, Map<String, dynamic>? args) {},
               ),
             ),
           ),

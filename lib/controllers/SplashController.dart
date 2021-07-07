@@ -29,8 +29,7 @@ class SplashController extends GetxController {
   }
 
   prepareApi() async {
-    final response = await http.get(
-      'https://twitter-fleets.herokuapp.com/',
-    );
+    Uri url = Uri.parse('https://twitter-fleets.herokuapp.com/');
+    final response = await http.get(url);
   }
 }

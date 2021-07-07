@@ -11,9 +11,9 @@ const TEST = false;
 
 class AdmobController extends GetxController {
   // AdmobInterstitial interstitialAd;
-  InterstitialAd interstitialAd;
+  late InterstitialAd interstitialAd;
 
-  AppOpenAd appOpenAd;
+  late AppOpenAd appOpenAd;
 
   final bannerController = BannerAdController();
 
@@ -32,7 +32,7 @@ class AdmobController extends GetxController {
  
   }
 
-  String getAdMobAppId() {
+  String? getAdMobAppId() {
     if (Platform.isIOS) {
       return TEST ? MyAdmob.TEST_app_id_ios : MyAdmob.PROD_app_id_ios;
     } else if (Platform.isAndroid) {
@@ -41,7 +41,7 @@ class AdmobController extends GetxController {
     return null;
   }
 
-  String getBannerAdId() {
+  String? getBannerAdId() {
     if (Platform.isIOS) {
       // return ;
       return TEST ? MyAdmob.TEST_banner_id_ios : MyAdmob.PROD_banner_id_ios;
@@ -54,7 +54,7 @@ class AdmobController extends GetxController {
     return null;
   }
 
-  String getInterstitialAdId() {
+  String? getInterstitialAdId() {
     if (Platform.isIOS) {
       return TEST
           ? MyAdmob.TEST_interstitial_id_ios
@@ -67,7 +67,7 @@ class AdmobController extends GetxController {
     return null;
   }
 
-String getOpenAdId() {
+String? getOpenAdId() {
     if (Platform.isIOS) {
       return TEST
           ? MyAdmob.TEST_open_ad_id_ios

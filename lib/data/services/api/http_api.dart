@@ -10,8 +10,8 @@ import 'package:http/http.dart' as http;
 import 'api.dart';
 
 class HttpApi implements Api {
-  String url = 'https://strapi-giveaways-api.herokuapp.com';
-  String profile;
+  Uri url = Uri.parse('https://strapi-giveaways-api.herokuapp.com');
+  String? profile;
   String fleetsUrl = 'https://twitter-fleets.herokuapp.com/scrape/fleets/';
   List<Information> information = [];
   List<About> about = [];
@@ -23,7 +23,8 @@ class HttpApi implements Api {
   @override
   Future<List<About>> getAboutInformation() async {
     logger.d('Sending http for about information');
-    final response = await http.get('$url/abouts');
+    Uri uri = Uri.parse('$url/abouts');
+    final response = await http.get(uri);
 
     logger.v('response status: $response.statusCode ');
 
@@ -37,7 +38,8 @@ class HttpApi implements Api {
   @override
   Future<List<Information>> getPolicyInformation() async {
     logger.d("Sending http for privacy policy");
-    final response = await http.get('$url/privacypolitics');
+    Uri uri = Uri.parse('$url/privacypolitics');
+    final response = await http.get(uri);
 
     logger.v("response status: $response.statusCode ");
 
@@ -51,23 +53,23 @@ class HttpApi implements Api {
   @override
   Future<List<Fleets>> getFleets(String profile) async {
     List<Fleets> fleets = [];
-
+    Uri uri = Uri.parse('$fleetsUrl/$profile');
     logger.d("Sending http for Fleets");
-    final response = await http.get('$fleetsUrl$profile');
+    final response = await http.get(uri);
 
     logger.v("Response body: ${response.body}");
     logger.v("response status: ${response.statusCode} ");
 
     // fleets.addAll(data);
-    // return fleets;
+    return fleets;
   }
 
   @override
   Future<dynamic> getInfo(String profile) async {
     List<Fleets> fleets = [];
-
+    Uri uri = Uri.parse('$fleetsUrl/$profile');
     logger.d("Sending http for Fleets");
-    final response = await http.get('$fleetsUrl$profile');
+    final response = await http.get(uri);
 
     logger.v("Response body: ${response.body}");
     logger.v("response status: ${response.statusCode} ");

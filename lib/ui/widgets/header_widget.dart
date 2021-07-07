@@ -16,7 +16,7 @@ Widget headerWidget(BuildContext context, Color primary,
         children: <Widget>[
           IconButton(
             onPressed: () {
-              drawerKey.currentState.openDrawer();
+              drawerKey.currentState!.openDrawer();
 //              print(status);
 //              status = status == FSBStatus.FSB_OPEN ? FSBStatus.FSB_CLOSE : FSBStatus.FSB_OPEN;
             },

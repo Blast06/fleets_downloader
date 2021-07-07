@@ -13,17 +13,17 @@ String informationToJson(List<Information> data) =>
 
 class Information {
   Information({
-    @required this.id,
-    @required this.description,
-    @required this.name,
-    @required this.publishedAt,
-    @required this.createdAt,
-    @required this.updatedAt,
+    required this.id,
+    required this.description,
+    required this.name,
+    required this.publishedAt,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
-  final int id;
-  final String description;
-  final String name;
+  final int? id;
+  final String? description;
+  final String? name;
   final DateTime publishedAt;
   final DateTime createdAt;
   final DateTime updatedAt;

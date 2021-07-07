@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
 class FleetCard extends StatelessWidget {
-  final String type;
-  final String url;
-  const FleetCard({Key key, @required this.type, @required this.url})
+  final String? type;
+  final String? url;
+  const FleetCard({Key? key, required this.type, required this.url})
       : super(key: key);
 
   @override
@@ -16,7 +16,7 @@ class FleetCard extends StatelessWidget {
             margin: EdgeInsets.all(5),
             child: ChewieListItem(
               videoPlayerController: VideoPlayerController.network(
-                url,
+                url!,
               ),
               looping: true,
             ),
@@ -25,7 +25,7 @@ class FleetCard extends StatelessWidget {
             height: Get.height * .50,
             width: Get.width,
             margin: EdgeInsets.all(5),
-            child: Image.network(url),
+            child: Image.network(url!),
           );
   }
 }

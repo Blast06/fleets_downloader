@@ -13,7 +13,7 @@ class Message {
     this.message,
   });
 
-  String message;
+  String? message;
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
         message: json["message"],
