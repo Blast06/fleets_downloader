@@ -10,7 +10,8 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="Fleets Downloader"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true">
 
         <provider
             android:name="vn.hunghd.flutterdownloader.DownloadedFileProvider"
@@ -35,6 +36,7 @@
             <meta-data
                 android:name="vn.hunghd.flutterdownloader.MAX_CONCURRENT_TASKS"
                 android:value="5" />
+            
         </provider>
 
 
