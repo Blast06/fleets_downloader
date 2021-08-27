@@ -13,12 +13,21 @@ class HttpApi implements Api {
   Uri url = Uri.parse('https://strapi-giveaways-api.herokuapp.com');
   String? profile;
   String fleetsUrl = 'https://twitter-fleets.herokuapp.com/scrape/fleets/';
+  String igUrl = 'https://www.instagram.com/p/CSlfy_Pt7f8/?__a=1';
   List<Information> information = [];
   List<About> about = [];
 
   // List<Message> message = [];
 
   var logger = Logger();
+
+  Future getIgVideo() async {
+    logger.d("sending http for ig");
+    Uri uri = Uri.parse(igUrl);
+    final response = await http.get(uri);
+    logger.v(response);
+    return response;
+  }
 
   @override
   Future<List<About>> getAboutInformation() async {
